@@ -1,0 +1,151 @@
+
+.main{
+   width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.main .loginbk{
+    width: 100%;
+    height: 34%;
+    background: url("../image/loginbk.jpeg");
+}
+
+.main .login{
+    display: none;
+    height: 414px;
+    width: 537px;
+    box-shadow: 5px 5px 30px #000000;
+    background-color: #E6E6FA;
+    border-radius: 5px;
+    text-align: center;
+}
+.main .login .perimg{
+    box-shadow:3px 3px 10px #B0B0B0;
+    width:130px;
+    height: 130px;
+    margin-top: 14%;
+    margin-left: 37%;
+    float: left;
+    border-radius: 50%;
+    background:url("../image/perimage.png");
+    background-repeat: no-repeat;
+}
+.main .login .input{
+    width: 100%;
+    height: 38%;
+}
+.main .login .input .pername{
+    width: 60%;
+    background: #E6E6FA;
+    margin-top: 5px;
+    height: 27%;
+    outline: none;
+    border-width: 0 0 1px 0;
+    border-bottom-color: #B0B0B0;
+    font-size: 15px;
+}
+.main .login .checkit{
+    margin-left: 20%;
+    width: 60%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+    vertical-align: text-bottom;
+    width: 20px;
+    height: 20px;
+    background-color: #E6E6FA;
+    -webkit-appearance:none;
+    border: 1px solid #c9c9c9;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+    background: url("../image/right.png") no-repeat center;
+}
+
+.Loginbtn{
+    margin-left: 20%;
+    margin-top: 1%;
+    width: 60%;
+    height: 10%;
+}
+
+.Loginbtn .btn{
+    width: 100%;
+    height: 100%;
+    background-color: #B0B0B0;
+    border-radius: 5px;
+    border-width: 0;
+    font-size: 17px;
+    cursor: pointer;
+    outline-color: #E6E6FA;
+}
+.main .login .zhuce {
+    text-align: left;
+}
+a:hover{
+    color: black;
+}
+.main .register{
+    display: none;
+    width: 563px;
+    height: 680px;
+    background-color: #E6E6FA;
+    border-radius: 5px;
+}
+
+.main .register input{
+    outline:none;
+    background-color: #E6E6FA;
+    width: 60%;
+    height: 7%;
+    border-width: 0 0 1px 0;
+    font-size: 15px;
+    border-bottom-color: #B0B0B0;
+    margin-top: 1%;
+    margin-left: 17%;
+}
+
+.main .register input:focus{
+    border-bottom-color: black;
+}
+
+.main .register h4{
+    margin-left: 17%;
+    margin-top: 1%;
+}
+
+.main .register #getma{
+    width: 20%;
+    height:6%;
+    margin-left: 0%;
+    background-color: #B0B0B0;
+    border-radius: 5px;
+    outline-color: #E6E6FA;
+    border: 0px;
+
+}
+
+.main .register .registerbtn{
+    width: 60%;
+    height: 8%;
+    background-color: #B0B0B0;
+    border-radius: 5px;
+    outline-color: #E6E6FA;
+    cursor: pointer;
+    border-width: 0;
+    margin-left: 17%;
+    margin-top: 3%;
+    font-size: 20px;
+    cursor:not-allowed;
+
+}
+

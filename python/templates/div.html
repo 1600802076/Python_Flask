@@ -1,0 +1,120 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: pc
+  Date: 2019/11/28
+  Time: 19:57
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>div绘图实现</title>
+    <script type="text/javascript" src="jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="jquery-3.4.1/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="JS/DataStructure.js"></script>
+    <script type="text/javascript" src="JS/algorithm.js"></script>
+</head>
+<style type="text/css">
+    #move{
+        position:absolute;
+        width:500px;
+        height:50px;
+        top:200px;
+        font-size: 50px;
+    }
+</style>
+
+<body>
+<div style="position:relative;background-color: #40AFFE;width: 500px;height: 300px;">
+    <div style="position: absolute;top: 0;left: 0;height: 100px;width: 100px;background-color: #8D8D8D"></div>
+   <div style="position: absolute;top: 0;left: 0;height: 100px;width: 100px;background-color: #FD482C"></div>
+</div>
+<div>
+    <input type="text">
+    <input type="button"  value="提交">
+</div>
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var hello = 0;
+        var obj = {
+            a:1,
+            b:function () {
+                alert(this.a);
+
+            }
+        };
+        console.log(obj.b);
+        $("input[type='button']").on("click",function () {
+            var text = $("input[type='text']").val();
+            console.log(text);
+
+            $.ajax({
+                type:"get",
+                async:false,
+                url:"https://www.baidu.com/sugrec?pre=1&p=3&ie=utf-8&json=1&prod=pc&from=pc_web&sugsid=1458,21122,30210,18559,26350,28704&wd="+ text,
+                dataType:"jsonp",
+                jsonp:"callback",
+                jsonpCallback:"flight",
+                success:function (json) {
+                    for(var i=0;i<json.g.length;i++){
+                        console.log(json.g[i].q);
+                    }
+                },
+                error:function () {
+                    console.log("请求失败");
+                }
+            });
+        })
+    })
+</script>
+  <!-- /* var book = {
+        title:"JavaScript",
+        authors:"J.K.rolin",
+        data:{year:2019,mouth:12},
+        edition:3,
+        releaseDate:new Date(2019,12,10),
+        toJSON:function () {
+            return this.title;
+        }
+    };
+    var Jsontext = JSON.stringify(book);
+*/
+
+   //一个简易的Promise Ajax链式调用
+function Getp1() {
+    return new Promise(function (resolved,rejected) {
+        $.get("",function (data1) {
+            resolved(data1);
+        })
+    })
+};
+   function Getp2() {
+       return new Promise(function (resolved,rejected) {
+           $.get("",function (data2) {
+               resolved(data2);
+           })
+       })
+   };
+   function Getp3() {
+       return new Promise(function (resolved,rejected) {
+           $.get("",function (data3) {
+               resolved(data3);
+           })
+       })
+   };
+   var title = "";
+    Getp1().then(function (data1) {
+        title += data1;
+        return Getp2();
+    }).then(function (data2) {
+        title += data2;
+        return Getp3();
+    }).then(function (data3) {
+        title += data3;
+        return title;
+    })
+
+  // https://sp1.baidu.com/5b11fzupBgM18t7jm9iCKT-xh_/sensearch?wd=Hello&cb=bd_cb_dict3_1575959187335&callback=bd_cb_dict3_1575959187335&_=1575959187202-->
+</html>

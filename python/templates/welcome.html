@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>数据标注</title>
+    <script type="text/javascript" src="{{ url_for('static',filename = 'JS/jquery-3.4.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename = 'JS/jquery-3.4.1.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename = 'layer/layer.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename = 'JS/vue.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename = 'JS/tool.js') }}"></script>
+    <link rel="icon" href="{{url_for('static',filename='image/logo.ico') }}" type="image/x-icon">
+    <script type="text/javascript" src="{{ url_for('static',filename = 'JS/jCanvas.js') }}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'CSS/welcome.css') }}">
+
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            min-width:1024px;
+            max-width:100%;
+        }
+
+    </style>
+
+</head>
+<body>
+<!--导航-->
+<div id="load">
+    <nav class="nav">
+        <img class="imgmain" src="../static/image/logo.ico">
+        <div class="navdiv1">
+            <a href="#" id="quanxian" v-on:click="showit('用户权限管理')">用户权限管理</a>
+            <a href="#" id="xiangmu" v-on:click="showit('项目管理')">项目管理</a>
+            <a>统计管理</a>
+        </div>
+        <div class="navdiv2">
+            <a >工具试用</a>
+            <a>使用帮助</a>
+            <a style="color: #c9c9c9" >{{name}} |</a>
+            <a href="return">退出</a>
+        </div>
+    </nav>
+<!-- 当前路径 -->
+    <div  class="loaddiv" style="background-color: #E6E6FA;">
+        {% raw %}
+        <h3>{{load1}}/{{load2}}</h3>
+        {% endraw %}
+    </div>
+    <div id="precanvas" style="margin-top:20px;margin-left:5%;position: relative;height: 600px;">
+        <canvas style="position: absolute;z-index: -1;" id="canvas1" width="1200" height="600"></canvas>
+        <canvas style="position: absolute; z-index: 1;" id="canvas" width="1200" height="600"></canvas>
+    </div>
+</div>
+<div id="show">
+    <img src="../static/image/car.jpg"style="display: none;">
+    <button id="button">生成图像</button>
+</div>
+    <!--拓展-->
+    <div id="none1" class="none" style="width: 133px;height: 100px;margin-left: 136px">
+        <a>用户组管理</a><br>
+        <a>用户管理</a><br>
+        <a>申请审核</a>
+    </div>
+
+    <div id="none2" class="none" style="width: 133px;height: 100px;margin-left: 280px">
+        <a>待处理项目列表</a><br>
+        <a>数据收藏列表</a><br>
+        <a>数据挂起列表</a>
+    </div>
+</body>
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        $(function () {
+            var layer=0;
+            var canvas1 = document.getElementById("canvas1");
+            var text1 = canvas1.getContext("2d");
+            var image = document.images[1];
+            text1.drawImage(image,0,0);
+        var drawRect = function(canvasId,penColor,strokeWidth){
+                    var that=this;
+                    that.penColor=penColor;
+                    that.penWidth=strokeWidth;
+
+                    var canvas=document.getElementById(canvasId);
+                    //canvas 的矩形框
+                    var canvasRect = canvas.getBoundingClientRect();
+                    //矩形框的左上角坐标
+                    var canvasLeft=canvasRect.left;
+                    var canvasTop=canvasRect.top;
+
+                    var layerIndex=layer;
+                    var layerName="layer";
+                    var x=0;
+                    var y=0;
+                    var errormsg = 1;
+
+                         $("#" + canvasId).saveCanvas();
+                            //鼠标点击按下事件，画图准备
+                            canvas.onmousedown=function(e) {
+                                //设置画笔颜色和宽度
+                                if (errormsg)
+                                {
+                                    var color = that.penColor;
+                                var penWidth = that.penWidth;
+
+                                layerIndex++;
+                                layer++;
+                                layerName += layerIndex;
+                                x = e.clientX - canvasLeft; //起点坐标
+                                y = e.clientY - canvasTop;
+
+                                $("#" + canvasId).addLayer({
+                                    layers: true,
+                                    type: 'rectangle',
+                                    strokeStyle: color,
+                                    strokeWidth: penWidth,
+                                    name: layerName,
+                                    fromCenter: false,
+                                    x: x, y: y,
+                                    width: 1,
+                                    height: 1
+                                });
+
+                                $("#" + canvasId).drawLayers();
+                                $("#" + canvasId).saveCanvas();
+                                //鼠标移动事件，画图
+                                canvas.onmousemove = function (e) {
+                                    width = e.clientX - canvasLeft - x;
+                                    height = e.clientY - canvasTop - y;
+                                    $("#" + canvasId).removeLayer(layerName);
+
+                                    $("#" + canvasId).addLayer({
+                                        layers: true,
+                                        type: 'rectangle',
+                                        strokeStyle: color,
+                                        strokeWidth: penWidth,
+                                        name: layerName,
+                                        fromCenter: false,
+                                        x: x, y: y,
+                                        width: width,
+                                        height: height
+                                    });
+                                    $("#" + canvasId).drawLayers();
+                                }
+                            }
+                            };
+
+                            canvas.onmouseup=function(e){
+                                if(errormsg) {
+                                    var color = that.penColor;
+                                    var penWidth = that.penWidth;
+                                    canvas.onmousemove = null;
+                                    width = e.clientX - canvasLeft - x;
+                                    height = e.clientY - canvasTop - y;
+
+                                    $("#" + canvasId).removeLayer(layerName);
+
+                                    $("#" + canvasId).addLayer({
+                                        layers: true,
+                                        dblclick:function (layer) {
+                                            $("#"+canvasId).removeLayer(layerName);
+                                        },
+                                        cursors:{
+                                            mousemove:"grab"
+                                        },
+                                        type: 'rectangle',
+                                        strokeStyle: color,
+                                        strokeWidth: penWidth,
+                                        name: layerName,
+                                        draggable: true,
+                                        fillStyle:"rgba(0,0,0,0)",
+                                        fromCenter: false,
+                                        x: x, y: y,
+                                        width: width,
+                                        height: height
+                                    });
+
+                                    $("#"+canvasId).drawLayers();
+                                    $("#" + canvasId).saveCanvas();
+                                    errormsg = 0;
+                                }
+                        }
+                    };
+            function drawPen(){
+                var color = "red";
+                var width = 1;
+               drawRect("canvas", color, width);
+            }
+            document.onkeydown = function(event){
+                if(event.keyCode == 71){
+                    drawPen();
+                }
+            };
+            var none1 = document.getElementById("none1");
+            var none2 = document.getElementById("none2");
+            window.onmouseover =function (e) {
+                if(e.clientY >170 || e.clientX < 135 || e.clientX > 268) {
+                    none1.style.display = "none";
+                }
+                if( e.clientX < 280 || e.clientX > 412){
+                    none2.style.display = "none";
+                }
+            };
+            $("#quanxian").on("mouseover",function () {
+                none1.style.display = "inline";
+            });
+            $("#xiangmu").on("mouseover",function () {
+                none2.style.display = "inline";
+            });
+            $("#button").on("click",function () {
+                var huabu = document.getElementById("canvas");
+                text1.drawImage(huabu,0,0);
+                var ImgURI = canvas1.toDataURL("image/jpeg");
+                var tupian = document.createElement("img");
+                tupian.src = ImgURI;
+                var div = document.getElementById("show");
+                div.appendChild(tupian);
+            });
+        });
+
+        var welcome = new Vue({
+            el:"#load",
+            data:{
+                load1:null,
+                load2:null
+            },
+            methods:{
+                showit:function (item) {
+                    this.load1 = item;
+                    this.load2 = item;
+                }
+            }
+        });
+    });
+</script>
+
+</html>
